@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/userlocation";
 var events = require('events');
 var DB = null;
-var MAX_COLL_SIZE = 1048576; //Mb
+var MAX_COLL_SIZE = 1048576; //1 Mb
 
 exports.initDatabase = function(){
         MongoClient.connect(url, function(err, db) {
@@ -22,14 +22,14 @@ exports.initDatabase = function(){
 
                 global.eventEmitter.emit("DB_READY");
 
-                DB = db; //keep DB object for later u
+                DB = db; //keep DB object for later use
 	});
 }
 
 exports.updateLocation = function(lng, lat, id,callback){
         //put the object together
 	var epoch = (new Date).getTime();
-	var locatzione = {id:id, lng:lng, lat:lat, time:epoch};
+	var locatzione = {id:id, lat:lat, lng:lng, time:epoch};
 
 	 DB.collection("registrations").findOne({id: id}, function(err, document){
                 if(err)throw err;

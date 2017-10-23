@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-//var events = require('events');
 var mongo = require('./dataBaseStuff');
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -21,10 +20,10 @@ app.get('/test', function(req, res){
 
 app.post('/updatelocation', function(req, res){
 	var userId = req.query.id;
-	var lng = req.query.lng;
 	var lat = req.query.lat;
+	var lng = req.query.lng;
 	console.log("networkThings::post::updatelocation " + userId + " " + lat + "," + lng + " " + (new Date().getTime()));
-	mongo.updateLocation(lng, lat, userId, function(err, result){
+	mongo.updateLocation(lat, lng, userId, function(err, result){
 		if(err){res.end(err);}
 		if(result = "OK_updated"){
 			res.end("OK_updated " + userId);
