@@ -24,8 +24,8 @@ app.post('/updatelocation', function(req, res){
 	var lng = req.query.lng;
 	console.log("networkThings::post::updatelocation " + userId + " " + lat + "," + lng + " " + (new Date().getTime()));
 	mongo.updateLocation(lat, lng, userId, function(err, result){
-		if(err){res.end(err);}
-		if(result = "OK_updated"){
+		if(err == "ERR_NOT_REGISTERED"){res.status(403).end(err);}
+		else if(result == "OK_updated"){
 			res.end("OK_updated " + userId);
 		}
 
@@ -37,10 +37,14 @@ app.post('/register', function(req, res){
 	console.log("networkThings::post::register " + userId);
 	mongo.register(userId, function(err, result){
 		console.log("ressing result " + userId);
-		if(err){res.end(err);}
-		if(result = "OK_registered"){
-			res.end("OK_registered:" + userId)
+		if(result == "OK_registered"){
+			res.status(201).end("OK_registered:" + userId)
 		}
+		else if(err == ERR_EXISTED){res.status(403).end(err);}
+		else if(err == ERR_FUL){res.status(403).end(err);}
+		else{res.status(500).end(err);}
+
+
 	});	
 })
 
