@@ -16,14 +16,14 @@ var server = app.listen(2223, function (){
 }
 app.get('/test', function(req, res){
 	res.end("OK all great!");
-
+	console.log("networkThings::get::testCalled");
 });
 
 app.post('/updatelocation', function(req, res){
 	var userId = req.query.id;
 	var lng = req.query.lng;
 	var lat = req.query.lat;
-	console.log("upd " + userId + " " + lat + "," + lng + " " + (new Date().getTime()));
+	console.log("networkThings::post::updatelocation " + userId + " " + lat + "," + lng + " " + (new Date().getTime()));
 	mongo.updateLocation(lng, lat, userId, function(err, result){
 		if(err){res.end(err);}
 		if(result = "OK_updated"){
@@ -35,7 +35,7 @@ app.post('/updatelocation', function(req, res){
 
 app.post('/register', function(req, res){
 	var userId = req.query.id;
-	console.log("in register");
+	console.log("networkThings::post::register " + userId);
 	mongo.register(userId, function(err, result){
 		console.log("ressing result " + userId);
 		if(err){res.end(err);}
